@@ -75,13 +75,13 @@ function initializeGame() {
 
 
       clearInterval(game);
-      alert('Game Over :(');
+      alert('Game Over!!!');
     }
 
 
 
   }
-}
+
 
 
 
@@ -89,5 +89,49 @@ function initializeGame() {
 
   createSnake();
   drawFood();
+
+
+// previous heead positions
+let snakeX = snake[0].x;
+let snakeY = snake[0].y;
+
+
+
+
+if (direction == "right") snakeX += GRID_SIZE;
+if (direction == "left") snakeX -= GRID_SIZE;
+if (direction == "up") snakeY -= GRID_SIZE;
+if (direction == "down") snakeY += GRID_SIZE;
+
+
+
+if (snakeX != food.x || snakeY != food.y) {
+  snake.pop(); //removes the last elemnt on the list
+} else {
+  food.x = Math.floor(Math.random() * 15 + 1) * GRID_SIZE;
+  food.y = Math.floor(Math.random() * 15 + 1) * GRID_SIZE;
+}
+
+let newHead = {
+  x: snakeX,
+  y: snakeY
+}
+
+  
+// this part is making sure the collision in the grid equals game over 
+if (snakeX < 0 || snakeX > 15 * GRID_SIZE || snakeY < 0 || snakeY > 15 * GRID_SIZE || collision(newHead, snake)) {
+  clearInterval(game);
+  alert('game over')
+  console.log('collusion')
+
+}
+
+
+snake.unshift(newHead); 
+}
+
+let game = setInterval(initializeGame, 200);
+
+
 
 
